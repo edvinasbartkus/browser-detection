@@ -1,0 +1,14 @@
+*.iml
+.idea
+
+web-app/uploads/
+
+/target
+/test/reports
+*.war
+
+/*.launch
+/*.tmproj
+
+stacktrace.log
+
