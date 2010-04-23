@@ -43,6 +43,11 @@ class BrowserTagLib {
             out << body()
         }
     }
+    def isiPad = { attrs, body ->
+        if(userAgentIdentService.getPlatform() == "iPad") {
+            out << body()
+        }
+    }
     def isWindows = { attrs, body ->
         if(userAgentIdentService.getPlatform() == "Windows") {
             out << body()
