@@ -48,15 +48,43 @@ class BrowserTagLib {
             out << body()
         }
     }
-    def isWindows = { attrs, body ->
-        if(userAgentIdentService.getPlatform() == "Windows") {
-            out << body()
-        }
-    }
-
     def isOpera = { attrs, body ->
         if(userAgentIdentService.isOpera()) {
             out << body()
         }
+    }
+
+    def isIE7 = { attrs, body ->
+      if(userAgentIdentService.isMsie() && userAgentIdentService.getBrowserVersion() == 7) {
+        out << body()
+      }
+    }
+
+    def isIE8 = { attrs, body ->
+      if(userAgentIdentService.isMsie() && userAgentIdentService.getBrowserVersion() =~ /^8\.0/) {
+        out << body()
+      }
+    }
+
+    def isIE9 = {
+      if(userAgentIdentService.isMsie() && userAgentIdentService.getBrowserVersion() =~ /^9\./)
+    }
+
+    def isLinux = { attrs, body ->
+      if(userAgentIdentService.isLinux()) {
+        out << body()
+      }
+    }
+
+    def isOSX = { attrs, body ->
+      if(userAgentIdentService.isOSX()) {
+        out << body()
+      }
+    }
+
+    def isWindows = { attrs, body ->
+      if(userAgentIdentService.isWindows()) {
+        out << body()
+      }
     }
 }

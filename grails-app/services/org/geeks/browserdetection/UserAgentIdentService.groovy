@@ -182,6 +182,15 @@ class UserAgentIdentService extends WebTierService {
     {
         return getUserAgentInfo().browserVersion;
     }
+    public boolean isLinux() {
+        return this.getOperatingSystem() =~ /Linux/
+    }
+    public boolean isOSX() {
+        return this.getOperatingSystem() =~ /OSX/
+    }
+    public boolean isWindows() {
+        return this.getOperatingSystem() =~ /Windows/
+    }
     public String getOperatingSystem()
     {
         return getUserAgentInfo().operatingSystem;
