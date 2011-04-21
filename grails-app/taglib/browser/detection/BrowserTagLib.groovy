@@ -54,6 +54,12 @@ class BrowserTagLib {
         }
     }
 
+    def isIE6 = { attrs, body ->
+      if(userAgentIdentService.isMsie() && userAgentIdentService.getBrowserVersion() == 6) {
+          out << body()
+      }
+    }
+
     def isIE7 = { attrs, body ->
       if(userAgentIdentService.isMsie() && userAgentIdentService.getBrowserVersion() == 7) {
         out << body()
@@ -67,7 +73,9 @@ class BrowserTagLib {
     }
 
     def isIE9 = {
-      if(userAgentIdentService.isMsie() && userAgentIdentService.getBrowserVersion() =~ /^9\./)
+      if(userAgentIdentService.isMsie() && userAgentIdentService.getBrowserVersion() =~ /^9\./) {
+          out << body()
+      }
     }
 
     def isLinux = { attrs, body ->

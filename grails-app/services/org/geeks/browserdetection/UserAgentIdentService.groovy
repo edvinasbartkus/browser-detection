@@ -23,15 +23,19 @@ class UserAgentIdentService extends WebTierService {
     public final static int CLIENT_BLACKBERRY = 6
     public final static int CLIENT_SEAMONKEY = 7
     public final static int CLIENT_OPERA = 8
+
+    def agentInfo = null
   
     def getUserAgentTag() {
         getRequest().getHeader("user-agent")
     }
 
     def getUserAgentInfo() {
+        if(agentInfo != null) return this.agentInfo
+
         def userAgent = getUserAgentTag()
 
-        def agentInfo = getRequest().getSession().getAttribute("org.geeks.browserdetection.UserAgentIdentService.agentInfo")
+        agentInfo = getRequest().getSession().getAttribute("org.geeks.browserdetection.UserAgentIdentService.agentInfo")
         if(agentInfo != null && agentInfo.agentString == userAgent) {
             return agentInfo
         } else if (agentInfo != null && agentInfo != userAgent) {
@@ -113,12 +117,13 @@ class UserAgentIdentService extends WebTierService {
                 browserVersion = browserVersion.substring(0, browserVersion.indexOf(";"));
             log.debug("Browser type: MSIE " + browserVersion);
         }
-        if (userAgent.indexOf("(") > 0) {
+        if (browserType != CLIENT_OTHER && userAgent.indexOf("(") > 0) {
             String osInfo = userAgent.substring(userAgent.indexOf("(") + 1);
             osInfo = osInfo.substring(0, osInfo.indexOf(")"));
             String[] infoParts = osInfo.split("; ");
-            platform = infoParts[0];
-            operatingSystem = infoParts[2];
+
+            platform = infoParts.getAt(0);
+            operatingSystem = browserType == UserAgentIdentService.CLIENT_FIREFOX ? infoParts.getAt(1): infoParts.getAt(2);
 
             if (browserType != UserAgentIdentService.CLIENT_MSIE) {
                 if (infoParts[1].equals("U"))
@@ -127,7 +132,6 @@ class UserAgentIdentService extends WebTierService {
                     security = "weak";
                 if (infoParts[1].equals("N"))
                     security = "none";
-                language = infoParts[((browserType == UserAgentIdentService.CLIENT_OPERA) ? 2 : 3)];
             }
         } else {
             if (browserType == UserAgentIdentService.CLIENT_BLACKBERRY) {
